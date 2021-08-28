@@ -1,90 +1,70 @@
-# Xcode
-#
-# gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
-
-## User settings
-xcuserdata/
-
-## compatibility with Xcode 8 and earlier (ignoring not required starting Xcode 9)
-*.xcscmblueprint
-*.xccheckout
-
-## compatibility with Xcode 3 and earlier (ignoring not required starting Xcode 4)
+# Xcodeのビルド生成物
+# ビルドすると自動生成されるので無視
 build/
-DerivedData/
-*.moved-aside
+DerivedData
+
+# Xcodeのプライベート設定
+# （ウィンドウサイズ、ブックマーク、ブレイクポイントなど）
+# 開発者ごとに違うものなので無視
 *.pbxuser
-!default.pbxuser
 *.mode1v3
-!default.mode1v3
 *.mode2v3
-!default.mode2v3
 *.perspectivev3
+
+# ! を最初につけると無視しない設定になる
+# 上記4つのデフォルト設定ファイルは無視しない
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
 !default.perspectivev3
 
-## Obj-C/Swift specific
+# VCSのメタデータが含まれ、コミットしてしまうとmergeが困難になるなどの問題が発生する
+# VCS = Version Controll System
+*.xccheckout
+
+# 同じ名前のクラスを定義しようとした時などに手動でdeprecated設定にすると生成されるファイル
+# ユーザごとに異なるので無視
+*.moved-aside
+
+# Headerファイルのマッピング設定
+# ユーザごとに異なるので無視
 *.hmap
 
-## App packaging
+# iOSのアプリケーションファイル
+# ビルドすれば作成されるので無視
+*.ipa
+
+# Xcodeで何かするたびに編集されるファイル
+*.xcuserstate
+
+
+# ビルドのカスタムscheme（ロケーション等）
+# ユーザごとに異なるので無視
+xcuserdata
+
+# CocoaPodで外部ライブラリがインストールされるフォルダ
+# $ pod install すると自動生成されるので無視
+Pods/*
+
+# スワップファイル
+# アプリケーションのクラッシュに備えて、 vimエディタでの編集開始時に作成され、編集後に削除される編集情報の記録ファイル
+*.swp
+
+# gitkeepは空のフォルダが必要な場合に作成するファイル
+!.gitkeep
+
+# Macで、アイコンの位置や表示設定などの
+# フォルダ表示設定に関するメタデータを記録するための隠しファイル
+# プロジェクトには不要なので無視
+.DS_Store
+
+# 配布用アプリ作成時に生成される
 *.ipa
 *.dSYM.zip
 *.dSYM
 
-## Playgrounds
-timeline.xctimeline
-playground.xcworkspace
-
-# Swift Package Manager
-#
-# Add this line if you want to avoid checking in source code from Swift Package Manager dependencies.
-# Packages/
-# Package.pins
-# Package.resolved
-# *.xcodeproj
-#
-# Xcode automatically generates this directory with a .xcworkspacedata file and xcuserdata
-# hence it is not needed unless you have added a package configuration file to your project
-# .swiftpm
-
-.build/
-
-# CocoaPods
-#
-# We recommend against adding the Pods directory to your .gitignore. However
-# you should judge for yourself, the pros and cons are mentioned at:
-# https://guides.cocoapods.org/using/using-cocoapods.html#should-i-check-the-pods-directory-into-source-control
-#
-# Pods/
-#
-# Add this line if you want to avoid checking in source code from the Xcode workspace
-# *.xcworkspace
-
-# Carthage
-#
-# Add this line if you want to avoid checking in source code from Carthage dependencies.
-# Carthage/Checkouts
-
-Carthage/Build/
-
-# Accio dependency management
-Dependencies/
-.accio/
-
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo.
-# Instead, use fastlane to re-generate the screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
+# fastlaneで生成される
 fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
 
-# Code Injection
-#
-# After new code Injection tools there's a generated folder /iOSInjectionProject
-# https://github.com/johnno1962/injectionforxcode
-
-iOSInjectionProject/
+# RSwift
+*.generated.swift
