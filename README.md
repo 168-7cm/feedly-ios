@@ -1,0 +1,2 @@
+# FeedlyApi
+FeedlyApi×RxSwift
