@@ -8,8 +8,8 @@ target 'feedly' do
   # Pods for feedly
   pod 'RxSwift'
   pod 'RxCocoa'
-  pod 'RxDataSources'
   pod 'R.swift'
+  pod 'Google-Mobile-Ads-SDK'
   
   target 'feedlyTests' do
     inherit! :search_paths

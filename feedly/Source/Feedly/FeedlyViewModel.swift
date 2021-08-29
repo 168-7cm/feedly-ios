@@ -8,17 +8,19 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import GoogleMobileAds
 
 protocol FeedlyViewModelInputs {
     func getFeeds()
     func resetContinuation()
+    func sendNativeAD(nativeAD: GADNativeAd)
 }
 
 protocol FeedlyViewModelOutputs {
     var loading: Observable<Bool> { get }
     var error: Observable<Bool> { get }
     var errorText: Observable<String> { get }
-    var feedItems: Observable<[FeedItem]> { get }
+    var feedItems: Observable<[AnyObject]> { get }
 }
 
 protocol FeedlyViewModelType {
@@ -42,8 +44,11 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     private let errorTextRelay = BehaviorRelay<String>(value: "")
     var errorText: Observable<String> { return self.errorTextRelay.asObservable() }
 
-    private let feedItemsRelay = BehaviorRelay<[FeedItem]>(value: [])
-    var feedItems: Observable<[FeedItem]> { return self.feedItemsRelay.asObservable() }
+    private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
+    var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
+
+    private let NativeADRelay = BehaviorRelay<[GADNativeAd]>(value: [])
+    private var NativeADs = [GADNativeAd]()
 
     // パラメーター
     private let feedlyStreamApi: FeedlyStreamModelProtocol
@@ -60,6 +65,11 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     // FeedlyViewModelInputs
     func resetContinuation() {
         self.continuation = nil
+    }
+
+    func sendNativeAD(nativeAD: GADNativeAd) {
+        NativeADRelay.accept([nativeAD])
+        self.NativeADs.append(nativeAD)
     }
 
     func getFeeds() {
@@ -89,8 +99,11 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         // ローディングの終了
         loadingRelay.accept(false)
 
-        if let feed = feed {
-            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
+        if let feed = feed, let feedItems = feed.items as? [AnyObject] {
+
+            // ここでランダムに広告を挟む
+            let feedAndAD: [AnyObject] = feedItems + NativeADs
+            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feedAndAD : feedAndAD)
             self.continuation = feed.continuation
         }
 
