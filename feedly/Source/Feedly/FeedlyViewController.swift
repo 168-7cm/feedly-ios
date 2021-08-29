@@ -17,7 +17,7 @@ final class FeedlyViewController: ViewControllerBase {
     // MARK: Properties
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
-    private var viewModel: FeedlyViewModelProtocol!
+    private var viewModel: FeedlyViewModelType!
 
     // MARK: IBOutlets
     @IBOutlet weak var feedListTableView: UITableView!
@@ -34,10 +34,10 @@ final class FeedlyViewController: ViewControllerBase {
     private func setupViewModel() {
 
         // ViewModelの初期化
-        viewModel = FeedlyViewModel(authApi: FeedlyAuthApi(), StreamApi: FeedlyStreamApi())
+        viewModel = FeedlyViewModel(authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
 
         // 初回取得分のフィードを表示する
-        viewModel?.getFeeds()
+        viewModel?.inputs.getFeeds()
     }
 
     private func setupTableView() {
@@ -48,30 +48,30 @@ final class FeedlyViewController: ViewControllerBase {
     private func bind() {
 
         // 一覧データをUITableViewにセットする処理
-        viewModel?.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
+        viewModel?.outputs.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
             cell.setup(feedItem: feedItem, index: index)
         }.disposed(by: disposeBag)
 
         // エラーの場合
-        viewModel?.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
+        viewModel?.outputs.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
             self?.showToast(errorMessage: errorMessage)
         }).disposed(by: disposeBag)
 
         // インジケーターを表示/非表示にする処理
-        viewModel?.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
+        viewModel?.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
             self?.showIndicator(isShow: $0)
         }).disposed(by: disposeBag)
 
         // RefreshControlを読んだ場合の処理
         refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
-            self?.viewModel?.resetContinuation()
-            self?.viewModel?.getFeeds()
+            self?.viewModel?.inputs.resetContinuation()
+            self?.viewModel?.inputs.getFeeds()
             self?.refreshControl.endRefreshing()
         }).disposed(by: disposeBag)
 
         // 追加取得する処理
         showNextFeedButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
-            self?.viewModel?.getFeeds()
+            self?.viewModel?.inputs.getFeeds()
         }).disposed(by: disposeBag)
 
         // UITableViewに配置されたセルをタップした場合の処理
@@ -86,7 +86,7 @@ final class FeedlyViewController: ViewControllerBase {
             let lastRowIndex = (self?.feedListTableView.numberOfRows(inSection: lastSectionIndex))! - 1
             let showsTableFooterView = feed.indexPath.section ==  lastSectionIndex && feed.indexPath.row == lastRowIndex
             if showsTableFooterView {
-                self?.viewModel.getFeeds()
+                self?.viewModel.inputs.getFeeds()
             }
         }).disposed(by: disposeBag)
     }

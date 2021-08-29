@@ -9,25 +9,30 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-protocol FeedlyViewModelProtocol {
-    var loading: Observable<Bool> { get }
-    var error: Observable<Bool> { get }
-    var errorText: Observable<String> { get }
-    var feedItems: Observable<[FeedItem]> { get }
-
+protocol FeedlyViewModelInputs {
     func getFeeds()
     func resetContinuation()
 }
 
-final class FeedlyViewModel: FeedlyViewModelProtocol {
+protocol FeedlyViewModelOutputs {
+    var loading: Observable<Bool> { get }
+    var error: Observable<Bool> { get }
+    var errorText: Observable<String> { get }
+    var feedItems: Observable<[FeedItem]> { get }
+}
 
-    // パラメーター
-    private let feedlyStreamApi: FeedlyStreamApiProtocol
-    private let feedlyAuthApi: FeedlyAuthApiProtocol
-    private let disposeBag = DisposeBag()
-    private var continuation: String?
+protocol FeedlyViewModelType {
+    var inputs: FeedlyViewModelInputs { get }
+    var outputs: FeedlyViewModelOutputs { get }
+}
 
-    // Modelの結果を流すSujbectとViewControllerが参照するObservable
+final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, FeedlyViewModelType {
+
+    // FeedlyViewModelType
+    var inputs: FeedlyViewModelInputs { return self }
+    var outputs: FeedlyViewModelOutputs { return self }
+
+    // FeedlyViewModelInputs
     private let loadingRelay = BehaviorRelay<Bool>(value: false)
     var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
 
@@ -40,17 +45,25 @@ final class FeedlyViewModel: FeedlyViewModelProtocol {
     private let feedItemsRelay = BehaviorRelay<[FeedItem]>(value: [])
     var feedItems: Observable<[FeedItem]> { return self.feedItemsRelay.asObservable() }
 
+    // パラメーター
+    private let feedlyStreamApi: FeedlyStreamModelProtocol
+    private let feedlyAuthApi: FeedlyAuthModelProtocol
+    private let disposeBag = DisposeBag()
+    private var continuation: String?
+
     // イニシャライザ
-    init(authApi: FeedlyAuthApiProtocol, StreamApi: FeedlyStreamApiProtocol) {
+    init(authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
         self.feedlyAuthApi = authApi
         self.feedlyStreamApi = StreamApi
     }
 
+    // FeedlyViewModelInputs
     func resetContinuation() {
         self.continuation = nil
     }
 
     func getFeeds() {
+
         // ローティングの開始
         loadingRelay.accept(true)
 
