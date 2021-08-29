@@ -20,6 +20,7 @@
 		BB02C7BB26D6905F00EB004C /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = BB02C7BA26D6905F00EB004C /* SwiftyJSON */; };
 		BB61D4D626DA3294007F87A2 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = BB61D4D526DA3294007F87A2 /* Toast */; };
 		BB61D4D926DA4E06007F87A2 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB61D4D826DA4E06007F87A2 /* Error.swift */; };
+		BB61D4DC26DB476D007F87A2 /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB61D4DB26DB476D007F87A2 /* ViewControllerBase.swift */; };
 		BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91405426D90EBD009D36EA /* FeedlyViewController.swift */; };
 		BB91405726D90EF2009D36EA /* Feedly.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB91405626D90EF2009D36EA /* Feedly.storyboard */; };
 		BB91405926D9108E009D36EA /* FeedlyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91405826D9108E009D36EA /* FeedlyViewModel.swift */; };
@@ -68,6 +69,7 @@
 		BB02C7A826D68F2800EB004C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB02C7B726D68F7D00EB004C /* FeedlyAuthApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyAuthApi.swift; sourceTree = "<group>"; };
 		BB61D4D826DA4E06007F87A2 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
+		BB61D4DB26DB476D007F87A2 /* ViewControllerBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
 		BB7EB1F97078F1A36B94AB48 /* Pods_feedlyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_feedlyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB91405426D90EBD009D36EA /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		BB91405626D90EF2009D36EA /* Feedly.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedly.storyboard; sourceTree = "<group>"; };
@@ -195,6 +197,14 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		BB61D4DA26DB4759007F87A2 /* ViewBase */ = {
+			isa = PBXGroup;
+			children = (
+				BB61D4DB26DB476D007F87A2 /* ViewControllerBase.swift */,
+			);
+			path = ViewBase;
+			sourceTree = "<group>";
+		};
 		BB91404C26D8F7EC009D36EA /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +250,7 @@
 		BB91405126D8F82A009D36EA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BB61D4DA26DB4759007F87A2 /* ViewBase */,
 				BB61D4D726DA4DFC007F87A2 /* Error */,
 				BB91404F26D8F805009D36EA /* AppDelegate */,
 				BB91404E26D8F7F9009D36EA /* Model */,
@@ -554,6 +565,7 @@
 				BB91406126D91F8B009D36EA /* R.generated.swift in Sources */,
 				BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */,
 				BB02C7B826D68F7D00EB004C /* FeedlyAuthApi.swift in Sources */,
+				BB61D4DC26DB476D007F87A2 /* ViewControllerBase.swift in Sources */,
 				BB02C78526D68F2500EB004C /* AppDelegate.swift in Sources */,
 				BB91405926D9108E009D36EA /* FeedlyViewModel.swift in Sources */,
 				BB61D4D926DA4E06007F87A2 /* Error.swift in Sources */,

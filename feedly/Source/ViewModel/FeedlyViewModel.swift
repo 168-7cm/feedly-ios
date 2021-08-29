@@ -51,8 +51,8 @@ final class FeedlyViewModel: FeedlyViewModelProtocol {
     }
 
     func getFeeds() {
-        // リクエスト開始時の処理
-        executeStartRequestAction()
+        // ローティングの開始
+        loadingRelay.accept(true)
 
         // フィードを取得する
         feedlyAuthApi.apiRequest()
@@ -61,32 +61,29 @@ final class FeedlyViewModel: FeedlyViewModelProtocol {
 
                 // API通信成功
                 onSuccess: { [weak self] feed in
-                    self?.executeSuccessResponseAction(feed: feed)
+                    self?.hundleApiResult(feed: feed, error: nil)
                 },
 
                 // API通信失敗
-                onFailure: { [weak self] error in
-                    if let error = error as? CustomError {
-                        self?.executeErrorResponseAction(error: error)
-                    }
+                onFailure: { [weak self] error  in
+                    self?.hundleApiResult(feed: nil, error: error as? CustomError)
                 }
             ).disposed(by: self.disposeBag)
     }
 
-    private func executeStartRequestAction() {
-        loadingRelay.accept(true)
-        errorRelay.accept(false)
-    }
+    private func hundleApiResult(feed: Feed?, error: CustomError?) {
 
-    private func executeErrorResponseAction(error: CustomError) {
+        // ローディングの終了
         loadingRelay.accept(false)
-        errorRelay.accept(true)
-        errorTextRelay.accept(error.rawValue)
-    }
 
-    private func executeSuccessResponseAction(feed: Feed) {
-        self.continuation = feed.continuation
-        feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
-        loadingRelay.accept(false)
+        if let feed = feed {
+            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
+            self.continuation = feed.continuation
+        }
+
+        if let error = error {
+            errorRelay.accept(true)
+            errorTextRelay.accept(error.rawValue)
+        }
     }
 }
