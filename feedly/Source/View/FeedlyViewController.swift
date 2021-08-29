@@ -18,7 +18,7 @@ final class FeedlyViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
-    private var viewModel: FeedlyViewModel?
+    private var viewModel: FeedlyViewModelProtocol!
 
     override func viewDidLoad() {
         setupViewModel()
@@ -42,13 +42,6 @@ final class FeedlyViewController: UIViewController {
 
     private func bind() {
 
-        // RefreshControlを読んだ場合の処理
-        refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
-            self?.viewModel?.resetContinuation()
-            self?.viewModel?.getFeeds()
-            self?.refreshControl.endRefreshing()
-        }).disposed(by: disposeBag)
-
         // 一覧データをUITableViewにセットする処理
         viewModel?.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
             cell.setup(feedItem: feedItem, index: index)
@@ -56,23 +49,30 @@ final class FeedlyViewController: UIViewController {
 
         // UITableViewに配置されたセルをタップした場合の処理
         feedListTableView.rx.itemSelected.subscribe( onNext: { [weak self] indexPath in
-            let feed = self?.viewModel?.feedItems.value[indexPath.row]
+            let feed = self?.viewModel?.feedItems
             print("didTapped\(feed)&\(indexPath)")
         }).disposed(by: disposeBag)
 
+        // エラーの場合
+        viewModel?.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] error in
+            self?.showToast(error: error)
+        }).disposed(by: disposeBag)
+
         // インジケーターを表示/非表示にする処理
-        viewModel?.isLoading.asDriver().drive(onNext: { [weak self] in
+        viewModel?.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
             self?.showIndicator(isShow: $0)
+        }).disposed(by: disposeBag)
+
+        // RefreshControlを読んだ場合の処理
+        refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
+            self?.viewModel?.resetContinuation()
+            self?.viewModel?.getFeeds()
+            self?.refreshControl.endRefreshing()
         }).disposed(by: disposeBag)
 
         // 追加取得する処理
         showNextFeedButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
             self?.viewModel?.getFeeds()
-        }).disposed(by: disposeBag)
-
-        // エラーの場合
-        viewModel?.errorText.asDriver().drive(onNext: { [weak self] error in
-            self?.showToast(error: error)
         }).disposed(by: disposeBag)
     }
 }
