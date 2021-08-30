@@ -19,6 +19,9 @@ final class FeedlyViewController: ViewControllerBase {
     private let refreshControl = UIRefreshControl()
     private var viewModel: FeedlyViewModelType!
 
+    private let NativeADRelay = BehaviorRelay<GADNativeAd>(value: GADNativeAd())
+    var nativeAD: Observable<GADNativeAd> { return self.NativeADRelay.asObservable() }
+
     // MARK: IBOutlets
     @IBOutlet weak var feedListTableView: UITableView!
     @IBOutlet weak var showNextFeedButton: UIBarButtonItem!
@@ -34,7 +37,7 @@ final class FeedlyViewController: ViewControllerBase {
     private func setupViewModel() {
 
         // ViewModelの初期化
-        viewModel = FeedlyViewModel(authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
+        viewModel = FeedlyViewModel(view: self, authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
 
         // 初回取得分のフィードを表示する
         viewModel?.inputs.getFeeds()
@@ -91,3 +94,32 @@ final class FeedlyViewController: ViewControllerBase {
         }).disposed(by: disposeBag)
     }
 }
+<<<<<<< Updated upstream
+=======
+
+// 広告の実装
+extension FeedlyViewController: GADNativeAdLoaderDelegate {
+
+    func setupNativeAD() {
+        let multipleAdsOptions = GADMultipleAdsAdLoaderOptions()
+        multipleAdsOptions.numberOfAds = 5
+        nativeAdLoader = GADAdLoader(adUnitID: "ca-app-pub-3940256099942544/3986624511", rootViewController: self, adTypes: [.native], options: [multipleAdsOptions])
+        nativeAdLoader.delegate = self
+        nativeAdLoader.load(GADRequest())
+    }
+
+    // 成功した時
+    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADNativeAd) {
+        self.NativeADRelay.accept(nativeAd)
+    }
+
+    // 失敗した時
+    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: Error) {
+    }
+
+    //広告のリクエストが終了
+    func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
+        self.viewModel.inputs.getFeeds()
+    }
+}
+>>>>>>> Stashed changes

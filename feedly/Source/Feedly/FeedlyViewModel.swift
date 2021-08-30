@@ -32,7 +32,7 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     var inputs: FeedlyViewModelInputs { return self }
     var outputs: FeedlyViewModelOutputs { return self }
 
-    // FeedlyViewModelInputs
+    // FeedlyViewModelOutputs
     private let loadingRelay = BehaviorRelay<Bool>(value: false)
     var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
 
@@ -42,19 +42,30 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     private let errorTextRelay = BehaviorRelay<String>(value: "")
     var errorText: Observable<String> { return self.errorTextRelay.asObservable() }
 
+<<<<<<< Updated upstream
     private let feedItemsRelay = BehaviorRelay<[FeedItem]>(value: [])
     var feedItems: Observable<[FeedItem]> { return self.feedItemsRelay.asObservable() }
+=======
+    private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
+    var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
+>>>>>>> Stashed changes
 
     // パラメーター
     private let feedlyStreamApi: FeedlyStreamModelProtocol
     private let feedlyAuthApi: FeedlyAuthModelProtocol
+    private weak var view: FeedlyViewController?
     private let disposeBag = DisposeBag()
     private var continuation: String?
 
     // イニシャライザ
-    init(authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
+    init(view: FeedlyViewController, authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
+        self.view = view
         self.feedlyAuthApi = authApi
         self.feedlyStreamApi = StreamApi
+
+        self.view?.nativeAD.subscribe( onNext: { [weak self] nativeAD in
+            print(nativeAD)
+        }).disposed(by: disposeBag)
     }
 
     // FeedlyViewModelInputs
@@ -89,8 +100,16 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         // ローディングの終了
         loadingRelay.accept(false)
 
+<<<<<<< Updated upstream
         if let feed = feed {
             feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
+=======
+        if let feed = feed, let feedItems = feed.items as? [AnyObject] {
+
+            // ここでランダムに広告を挟む
+            let feedAndAD: [AnyObject] = feedItems// + NativeADs
+            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feedAndAD : feedAndAD)
+>>>>>>> Stashed changes
             self.continuation = feed.continuation
         }
 
