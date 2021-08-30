@@ -20,9 +20,10 @@ final class FeedlyViewController: ViewControllerBase {
     private let refreshControl = UIRefreshControl()
     private var viewModel: FeedlyViewModelType!
     private var nativeAdLoader: GADAdLoader!
+    private var nativeAds = [GADNativeAd]()
 
-    private let NativeADRelay = BehaviorRelay<GADNativeAd>(value: GADNativeAd())
-    var nativeAD: Observable<GADNativeAd> { return self.NativeADRelay.asObservable() }
+    private let NativeADRelay = PublishRelay<[GADNativeAd]>()
+    var nativeAD: Observable<[GADNativeAd]> { return self.NativeADRelay.asObservable() }
 
     // MARK: IBOutlets
     @IBOutlet weak var feedListTableView: UITableView!
@@ -39,10 +40,11 @@ final class FeedlyViewController: ViewControllerBase {
     private func setupViewModel() {
 
         // ViewModelの初期化
-        viewModel = FeedlyViewModel(view: self, authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
+        viewModel = FeedlyViewModel(nativeAdObservable: NativeADRelay.asObservable(), authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
 
         // 初回取得分のフィードを表示する
         viewModel?.inputs.getFeeds()
+        setupNativeAD()
     }
 
     private func setupTableView() {
@@ -54,7 +56,11 @@ final class FeedlyViewController: ViewControllerBase {
 
         // 一覧データをUITableViewにセットする処理
         viewModel?.outputs.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
-            cell.setup(feedItem: feedItem, index: index)
+            if let feedItem = feedItem as? FeedItem {
+                cell.setup(feedItem: feedItem, index: index)
+            } else {
+                cell.setup(feedItem: FeedItem(originId: "", title: "広告広告広告広告", author: "", published: Date(), visual: Visual(url: "")), index: index)
+            }
         }.disposed(by: disposeBag)
 
         // エラーの場合
@@ -69,6 +75,7 @@ final class FeedlyViewController: ViewControllerBase {
 
         // RefreshControlを読んだ場合の処理
         refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
+            self?.setupNativeAD()
             self?.viewModel?.inputs.resetContinuation()
             self?.viewModel?.inputs.getFeeds()
             self?.refreshControl.endRefreshing()
@@ -77,6 +84,7 @@ final class FeedlyViewController: ViewControllerBase {
         // 追加取得する処理
         showNextFeedButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
             self?.viewModel?.inputs.getFeeds()
+            self?.setupNativeAD()
         }).disposed(by: disposeBag)
 
         // UITableViewに配置されたセルをタップした場合の処理
@@ -91,6 +99,7 @@ final class FeedlyViewController: ViewControllerBase {
             let lastRowIndex = (self?.feedListTableView.numberOfRows(inSection: lastSectionIndex))! - 1
             let showsTableFooterView = feed.indexPath.section ==  lastSectionIndex && feed.indexPath.row == lastRowIndex
             if showsTableFooterView {
+                self?.setupNativeAD()
                 self?.viewModel.inputs.getFeeds()
             }
         }).disposed(by: disposeBag)
@@ -110,7 +119,7 @@ extension FeedlyViewController: GADNativeAdLoaderDelegate {
 
     // 成功した時
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADNativeAd) {
-        self.NativeADRelay.accept(nativeAd)
+        self.nativeAds.append(nativeAd)
     }
 
     // 失敗した時
@@ -119,6 +128,6 @@ extension FeedlyViewController: GADNativeAdLoaderDelegate {
 
     //広告のリクエストが終了
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
-        self.viewModel.inputs.getFeeds()
+        self.NativeADRelay.accept(nativeAds)
     }
 }

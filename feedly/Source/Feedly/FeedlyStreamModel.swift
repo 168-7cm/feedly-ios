@@ -23,7 +23,7 @@ final class FeedlyStreamModel: FeedlyStreamModelProtocol {
     func apiRequest<Feed: Codable>(access_token: String, continuation: String?) -> Single<Feed> {
 
         let headers: HTTPHeaders = ["Authorization": "OAuth \(access_token)"]
-        var parameters: Parameters = ["streamId": self.streamId]
+        var parameters: Parameters = ["streamId": self.streamId, "count": 30]
         if let continuation = continuation {
             parameters["continuation"] = continuation
         }
