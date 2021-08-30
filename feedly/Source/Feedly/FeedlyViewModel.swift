@@ -28,6 +28,7 @@ protocol FeedlyViewModelType {
 
 final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, FeedlyViewModelType {
 
+
     // FeedlyViewModelType
     var inputs: FeedlyViewModelInputs { return self }
     var outputs: FeedlyViewModelOutputs { return self }
@@ -42,13 +43,8 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     private let errorTextRelay = BehaviorRelay<String>(value: "")
     var errorText: Observable<String> { return self.errorTextRelay.asObservable() }
 
-<<<<<<< Updated upstream
     private let feedItemsRelay = BehaviorRelay<[FeedItem]>(value: [])
     var feedItems: Observable<[FeedItem]> { return self.feedItemsRelay.asObservable() }
-=======
-    private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
-    var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
->>>>>>> Stashed changes
 
     // パラメーター
     private let feedlyStreamApi: FeedlyStreamModelProtocol
@@ -64,7 +60,7 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         self.feedlyStreamApi = StreamApi
 
         self.view?.nativeAD.subscribe( onNext: { [weak self] nativeAD in
-            print(nativeAD)
+           // print(nativeAD)
         }).disposed(by: disposeBag)
     }
 
@@ -100,16 +96,10 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         // ローディングの終了
         loadingRelay.accept(false)
 
-<<<<<<< Updated upstream
-        if let feed = feed {
-            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
-=======
-        if let feed = feed, let feedItems = feed.items as? [AnyObject] {
-
-            // ここでランダムに広告を挟む
-            let feedAndAD: [AnyObject] = feedItems// + NativeADs
+        if let feed = feed, let feedItems = feed.items as? [FeedItem] {
+            // ここでランダムに広告を挟む??
+            let feedAndAD: [FeedItem] = feedItems// + NativeADs
             feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feedAndAD : feedAndAD)
->>>>>>> Stashed changes
             self.continuation = feed.continuation
         }
 

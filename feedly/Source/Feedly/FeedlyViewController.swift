@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import RxDataSources
 import Toast
+import GoogleMobileAds
 
 // MARK:- Class
 final class FeedlyViewController: ViewControllerBase {
@@ -18,6 +19,7 @@ final class FeedlyViewController: ViewControllerBase {
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
     private var viewModel: FeedlyViewModelType!
+    private var nativeAdLoader: GADAdLoader!
 
     private let NativeADRelay = BehaviorRelay<GADNativeAd>(value: GADNativeAd())
     var nativeAD: Observable<GADNativeAd> { return self.NativeADRelay.asObservable() }
@@ -94,8 +96,6 @@ final class FeedlyViewController: ViewControllerBase {
         }).disposed(by: disposeBag)
     }
 }
-<<<<<<< Updated upstream
-=======
 
 // 広告の実装
 extension FeedlyViewController: GADNativeAdLoaderDelegate {
@@ -122,4 +122,3 @@ extension FeedlyViewController: GADNativeAdLoaderDelegate {
         self.viewModel.inputs.getFeeds()
     }
 }
->>>>>>> Stashed changes
