@@ -8,35 +8,34 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import RxDataSources
 import Toast
 import GoogleMobileAds
 
 // MARK:- Class
 final class FeedlyViewController: ViewControllerBase {
 
-    // MARK: Properties
+    // MARK: - Properties
+
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
     private var viewModel: FeedlyViewModelType!
+
+    // 広告表示用のプロパティ
     private var nativeAdLoader: GADAdLoader!
     private var nativeAds = [GADNativeAd]()
-
     private let NativeADRelay = PublishRelay<[GADNativeAd]>()
-    var nativeAD: Observable<[GADNativeAd]> { return self.NativeADRelay.asObservable() }
 
-    // MARK: IBOutlets
     @IBOutlet weak var feedListTableView: UITableView!
     @IBOutlet weak var showNextFeedButton: UIBarButtonItem!
 
-    // MARK: Life-Cycle Methods
     override func viewDidLoad() {
         setupViewModel()
         setupTableView()
         bind()
     }
 
-    // MARK: Privte Methods
+    // MARK: - Private Function
+
     private func setupViewModel() {
 
         // ViewModelの初期化
@@ -63,14 +62,24 @@ final class FeedlyViewController: ViewControllerBase {
             }
         }.disposed(by: disposeBag)
 
-        // エラーの場合
-        viewModel?.outputs.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
-            self?.showToast(errorMessage: errorMessage)
+        // UITableViewに配置されたセルをタップした場合の処理
+        feedListTableView.rx.modelSelected(FeedItem.self).subscribe( onNext: { [weak self] feed in
+            // 画面遷移
+            print("didTapped\(feed)")
         }).disposed(by: disposeBag)
 
-        // インジケーターを表示/非表示にする処理
-        viewModel?.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
-            self?.showIndicator(isShow: $0)
+        // UITableViewをいちばん下までスクロールした場合
+        feedListTableView.rx.willDisplayCell.subscribe( onNext: { [weak self] feed in
+
+            guard let self = self else { return }
+
+            let lastSectionIndex = self.feedListTableView.numberOfSections - 1
+            let lastRowIndex = self.feedListTableView.numberOfRows(inSection: lastSectionIndex) - 1
+            let showsTableFooterView = feed.indexPath.section ==  lastSectionIndex && feed.indexPath.row == lastRowIndex
+            if showsTableFooterView {
+                self.setupNativeAD()
+                self.viewModel.inputs.getFeeds()
+            }
         }).disposed(by: disposeBag)
 
         // RefreshControlを読んだ場合の処理
@@ -87,26 +96,20 @@ final class FeedlyViewController: ViewControllerBase {
             self?.setupNativeAD()
         }).disposed(by: disposeBag)
 
-        // UITableViewに配置されたセルをタップした場合の処理
-        feedListTableView.rx.modelSelected(FeedItem.self).subscribe( onNext: { [weak self] feed in
-            // 画面遷移
-            print("didTapped\(feed)")
+        // エラーの場合
+        viewModel?.outputs.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
+            self?.showToast(errorMessage: errorMessage)
         }).disposed(by: disposeBag)
 
-        // UITableViewをいちばん下までスクロールした場合
-        feedListTableView.rx.willDisplayCell.subscribe( onNext: { [weak self] feed in
-            let lastSectionIndex = ((self?.feedListTableView.numberOfSections)!) - 1
-            let lastRowIndex = (self?.feedListTableView.numberOfRows(inSection: lastSectionIndex))! - 1
-            let showsTableFooterView = feed.indexPath.section ==  lastSectionIndex && feed.indexPath.row == lastRowIndex
-            if showsTableFooterView {
-                self?.setupNativeAD()
-                self?.viewModel.inputs.getFeeds()
-            }
+        // インジケーターを表示/非表示にする処理
+        viewModel?.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
+            self?.showIndicator(isShow: $0)
         }).disposed(by: disposeBag)
     }
 }
 
-// 広告の実装
+// MARK: - Extension - GADNativeAdLoaderDelegate
+
 extension FeedlyViewController: GADNativeAdLoaderDelegate {
 
     func setupNativeAD() {

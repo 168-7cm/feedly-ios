@@ -26,12 +26,16 @@
 		BB61D4F726DB79F7007F87A2 /* FirestoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB61D4F626DB79F7007F87A2 /* FirestoreCell.swift */; };
 		BB61D4F926DB7A01007F87A2 /* FirestoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB61D4F826DB7A01007F87A2 /* FirestoreCell.xib */; };
 		BB61D4FB26DB7A14007F87A2 /* Firestore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB61D4FA26DB7A14007F87A2 /* Firestore.storyboard */; };
+		BB6F0B8A26DE6DFC00DA9669 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB6F0B8926DE6DFC00DA9669 /* GoogleService-Info.plist */; };
+		BB6F0B8D26DE6F8400DA9669 /* FirestoreConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB6F0B8C26DE6F8400DA9669 /* FirestoreConstant.swift */; };
 		BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91405426D90EBD009D36EA /* FeedlyViewController.swift */; };
 		BB91405726D90EF2009D36EA /* Feedly.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB91405626D90EF2009D36EA /* Feedly.storyboard */; };
 		BB91405926D9108E009D36EA /* FeedlyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91405826D9108E009D36EA /* FeedlyViewModel.swift */; };
 		BB91405E26D9157C009D36EA /* FeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB91405D26D9157C009D36EA /* FeedCell.xib */; };
 		BB91406126D91F8B009D36EA /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91406026D91F8B009D36EA /* R.generated.swift */; };
 		BB91406326D91FC2009D36EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91406226D91FC2009D36EA /* FeedCell.swift */; };
+		BBA239A126E11866008F94EF /* Date + Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A026E11866008F94EF /* Date + Utils.swift */; };
+		BBA239A426E1193B008F94EF /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A326E1193B008F94EF /* Shop.swift */; };
 		BBBC676126D74DD600579F45 /* FeedlyStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBC676026D74DD600579F45 /* FeedlyStreamModel.swift */; };
 		BBBC676426D7C8C300579F45 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = BBBC676326D7C8C300579F45 /* KeychainAccess */; };
 		BBCA089026D93C3A00E15B43 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA088F26D93C3A00E15B43 /* Feed.swift */; };
@@ -80,6 +84,8 @@
 		BB61D4F626DB79F7007F87A2 /* FirestoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreCell.swift; sourceTree = "<group>"; };
 		BB61D4F826DB7A01007F87A2 /* FirestoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FirestoreCell.xib; sourceTree = "<group>"; };
 		BB61D4FA26DB7A14007F87A2 /* Firestore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Firestore.storyboard; sourceTree = "<group>"; };
+		BB6F0B8926DE6DFC00DA9669 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BB6F0B8C26DE6F8400DA9669 /* FirestoreConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreConstant.swift; sourceTree = "<group>"; };
 		BB7EB1F97078F1A36B94AB48 /* Pods_feedlyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_feedlyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB91405426D90EBD009D36EA /* FeedlyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyViewController.swift; sourceTree = "<group>"; };
 		BB91405626D90EF2009D36EA /* Feedly.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feedly.storyboard; sourceTree = "<group>"; };
@@ -87,6 +93,8 @@
 		BB91405D26D9157C009D36EA /* FeedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCell.xib; sourceTree = "<group>"; };
 		BB91406026D91F8B009D36EA /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = "<group>"; };
 		BB91406226D91FC2009D36EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		BBA239A026E11866008F94EF /* Date + Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Utils.swift"; sourceTree = "<group>"; };
+		BBA239A326E1193B008F94EF /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
 		BBBC676026D74DD600579F45 /* FeedlyStreamModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyStreamModel.swift; sourceTree = "<group>"; };
 		BBCA088F26D93C3A00E15B43 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		BD1590B9FA220FADBA6A1CEF /* Pods_feedly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_feedly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,6 +224,7 @@
 		BB61D4DD26DB7794007F87A2 /* Feedly */ = {
 			isa = PBXGroup;
 			children = (
+				BB91405C26D91301009D36EA /* Struct */,
 				BB91406426D91FC7009D36EA /* Cell */,
 				BB91405626D90EF2009D36EA /* Feedly.storyboard */,
 				BB91405426D90EBD009D36EA /* FeedlyViewController.swift */,
@@ -229,6 +238,8 @@
 		BB61D4EE26DB799E007F87A2 /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
+				BBA239A226E1192E008F94EF /* Struct */,
+				BB6F0B8B26DE6F7700DA9669 /* Constant */,
 				BB61D4F526DB79ED007F87A2 /* Cell */,
 				BB61D4EF26DB79BD007F87A2 /* FirestoreViewController.swift */,
 				BB61D4F126DB79C7007F87A2 /* FirestoreViewModel.swift */,
@@ -247,6 +258,14 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		BB6F0B8B26DE6F7700DA9669 /* Constant */ = {
+			isa = PBXGroup;
+			children = (
+				BB6F0B8C26DE6F8400DA9669 /* FirestoreConstant.swift */,
+			);
+			path = Constant;
+			sourceTree = "<group>";
+		};
 		BB91404F26D8F805009D36EA /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,12 +277,12 @@
 		BB91405126D8F82A009D36EA /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				BBA2399F26E11853008F94EF /* Extension */,
 				BB91404F26D8F805009D36EA /* AppDelegate */,
 				BB61D4DA26DB4759007F87A2 /* ViewBase */,
 				BB61D4D726DA4DFC007F87A2 /* Error */,
 				BB61D4DD26DB7794007F87A2 /* Feedly */,
 				BB61D4EE26DB799E007F87A2 /* Firestore */,
-				BB91405C26D91301009D36EA /* Struct */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -273,6 +292,7 @@
 			children = (
 				BB02C78D26D68F2800EB004C /* Assets.xcassets */,
 				BB02C79226D68F2800EB004C /* Info.plist */,
+				BB6F0B8926DE6DFC00DA9669 /* GoogleService-Info.plist */,
 				BB91406026D91F8B009D36EA /* R.generated.swift */,
 			);
 			path = Resource;
@@ -295,6 +315,22 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		BBA2399F26E11853008F94EF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				BBA239A026E11866008F94EF /* Date + Utils.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		BBA239A226E1192E008F94EF /* Struct */ = {
+			isa = PBXGroup;
+			children = (
+				BBA239A326E1193B008F94EF /* Shop.swift */,
+			);
+			path = Struct;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -306,8 +342,8 @@
 				BB91405F26D91F01009D36EA /* R.swift */,
 				BB02C77D26D68F2500EB004C /* Sources */,
 				BB02C77E26D68F2500EB004C /* Frameworks */,
-				D2EC9EFF720E2E4B27FE3041 /* [CP] Embed Pods Frameworks */,
 				BB02C77F26D68F2500EB004C /* Resources */,
+				7C74EABBC1A19D19686F97D2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -351,7 +387,7 @@
 				BB02C79E26D68F2800EB004C /* Sources */,
 				BB02C79F26D68F2800EB004C /* Frameworks */,
 				BB02C7A026D68F2800EB004C /* Resources */,
-				ED794D1799C0EE34538D5A95 /* [CP] Embed Pods Frameworks */,
+				30CF6BF57843CD5B82C6A565 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -421,6 +457,7 @@
 				BB91405726D90EF2009D36EA /* Feedly.storyboard in Resources */,
 				BB61D4FB26DB7A14007F87A2 /* Firestore.storyboard in Resources */,
 				BB02C78E26D68F2800EB004C /* Assets.xcassets in Resources */,
+				BB6F0B8A26DE6DFC00DA9669 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -463,6 +500,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		30CF6BF57843CD5B82C6A565 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		6FC1E22BC886418BBE6A8D25 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -483,6 +537,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7C74EABBC1A19D19686F97D2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BB91405F26D91F01009D36EA /* R.swift */ = {
@@ -527,40 +598,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D2EC9EFF720E2E4B27FE3041 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-feedly/Pods-feedly-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ED794D1799C0EE34538D5A95 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-feedly-feedlyUITests/Pods-feedly-feedlyUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -570,14 +607,17 @@
 			files = (
 				BB61D4F026DB79BD007F87A2 /* FirestoreViewController.swift in Sources */,
 				BB61D4F726DB79F7007F87A2 /* FirestoreCell.swift in Sources */,
+				BBA239A126E11866008F94EF /* Date + Utils.swift in Sources */,
 				BBBC676126D74DD600579F45 /* FeedlyStreamModel.swift in Sources */,
 				BBCA089026D93C3A00E15B43 /* Feed.swift in Sources */,
 				BB61D4F426DB79D5007F87A2 /* FirestoreModel.swift in Sources */,
 				BB61D4F226DB79C7007F87A2 /* FirestoreViewModel.swift in Sources */,
 				BB91406126D91F8B009D36EA /* R.generated.swift in Sources */,
 				BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */,
+				BBA239A426E1193B008F94EF /* Shop.swift in Sources */,
 				BB02C7B826D68F7D00EB004C /* FeedlyAuthModel.swift in Sources */,
 				BB61D4DC26DB476D007F87A2 /* ViewControllerBase.swift in Sources */,
+				BB6F0B8D26DE6F8400DA9669 /* FirestoreConstant.swift in Sources */,
 				BB02C78526D68F2500EB004C /* AppDelegate.swift in Sources */,
 				BB91405926D9108E009D36EA /* FeedlyViewModel.swift in Sources */,
 				BB61D4D926DA4E06007F87A2 /* Error.swift in Sources */,

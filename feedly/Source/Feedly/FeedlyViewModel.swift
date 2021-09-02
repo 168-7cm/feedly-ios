@@ -29,12 +29,19 @@ protocol FeedlyViewModelType {
 
 final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, FeedlyViewModelType {
 
+    // MARK: - Properties
 
-    // FeedlyViewModelType
+    private let feedlyStreamApi: FeedlyStreamModelProtocol
+    private let feedlyAuthApi: FeedlyAuthModelProtocol
+    private let disposeBag = DisposeBag()
+    private var continuation: String?
+    private var nativeAdObservable: Observable<[GADNativeAd]>
+
+    // viewはここを経由してViewModelを扱う
     var inputs: FeedlyViewModelInputs { return self }
     var outputs: FeedlyViewModelOutputs { return self }
 
-    // FeedlyViewModelOutputs
+    // Viewが購読する
     private let loadingRelay = PublishRelay<Bool>()
     var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
 
@@ -47,21 +54,16 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
     var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
 
-    // パラメーター
-    private let feedlyStreamApi: FeedlyStreamModelProtocol
-    private let feedlyAuthApi: FeedlyAuthModelProtocol
-    private let disposeBag = DisposeBag()
-    private var continuation: String?
-    private var nativeAdObservable: Observable<[GADNativeAd]>
+    // MARK: - initilazier
 
-    // イニシャライザ
     init(nativeAdObservable: Observable<[GADNativeAd]>, authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
         self.nativeAdObservable = nativeAdObservable
         self.feedlyAuthApi = authApi
         self.feedlyStreamApi = StreamApi
     }
 
-    // FeedlyViewModelInputs
+    // MARK: - Function
+
     func resetContinuation() {
         self.continuation = nil
     }
@@ -87,8 +89,9 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         ).disposed(by: disposeBag)
     }
 
+    // MARK: - Private Function
+    
     private func hundleApiResult(feed: Feed, nativeAds: [GADNativeAd]) {
-
         // ローディングの終了
         loadingRelay.accept(false)
 
@@ -104,7 +107,7 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     }
 
     // 6個おきに広告を挟む
-    func insertNativeAds(feeditems: [FeedItem], nativeAds: [GADNativeAd]) -> [AnyObject] {
+    private func insertNativeAds(feeditems: [FeedItem], nativeAds: [GADNativeAd]) -> [AnyObject] {
         var feeditems = feeditems as [AnyObject]
         nativeAds.enumerated().forEach { (index, nativeAd) in
             let index = (index+1)*6
