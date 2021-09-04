@@ -55,9 +55,10 @@ final class FeedlyViewController: ViewControllerBase {
 
         // 一覧データをUITableViewにセットする処理
         viewModel?.outputs.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
-            if let feedItem = feedItem as? FeedItem {
+            switch cell {
+            case let feedItem as FeedItem:
                 cell.setup(feedItem: feedItem, index: index)
-            } else {
+            default:
                 cell.setup(feedItem: FeedItem(originId: "", title: "広告広告広告広告", author: "", published: Date(), visual: Visual(url: "")), index: index)
             }
         }.disposed(by: disposeBag)

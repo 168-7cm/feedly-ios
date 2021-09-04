@@ -14,11 +14,13 @@ import GoogleMobileAds
 protocol FirestoreViewModelInputs {
     func createShop()
     func getShops()
+    func configureWith(shopDocumentID: String)
 }
 
 protocol FirestoreViewModelOutputs {
     var shops: Observable<[AnyObject]> { get }
     var error: Observable<Error> { get }
+    var gotoDetail: Observable<String> { get }
 }
 
 protocol FirestoreViewModelType {
@@ -45,6 +47,9 @@ final class FirestoreViewModel: FirestoreViewModelInputs, FirestoreViewModelOutp
     private let errorRelay = PublishRelay<Error>()
     var error: Observable<Error> { return self.errorRelay.asObservable() }
 
+    private let gotoDetailSignal: Driver<String> = Driver.never()
+    var gotoDetail: Observable<String> { return gotoDetailSignal.asObservable() }
+
     // MARK: - initilazier
 
     init(nativeAdObservable: Observable<[GADNativeAd]>, firestoreModel: FirestoreModelProtocol) {
@@ -53,6 +58,11 @@ final class FirestoreViewModel: FirestoreViewModelInputs, FirestoreViewModelOutp
     }
 
     // MARK: - Function
+
+    // 何かを返すべき
+    func configureWith(shopDocumentID: String) {
+        self.gotoDetailSignal
+    }
 
     func createShop() {
         let shop = Shop(name: "すき家", location: "東京都新宿区高田馬場", createdAt: Date().toString(), foods: [Food(name: "牛丼", price: 500)])

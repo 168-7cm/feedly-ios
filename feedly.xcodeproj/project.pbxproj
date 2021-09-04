@@ -36,6 +36,9 @@
 		BB91406326D91FC2009D36EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB91406226D91FC2009D36EA /* FeedCell.swift */; };
 		BBA239A126E11866008F94EF /* Date + Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A026E11866008F94EF /* Date + Utils.swift */; };
 		BBA239A426E1193B008F94EF /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A326E1193B008F94EF /* Shop.swift */; };
+		BBA239A726E11C6B008F94EF /* CreateShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A626E11C6B008F94EF /* CreateShopViewController.swift */; };
+		BBA239A926E11C77008F94EF /* CreateShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239A826E11C77008F94EF /* CreateShopViewModel.swift */; };
+		BBA239AB26E11C83008F94EF /* CreateShopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBA239AA26E11C83008F94EF /* CreateShopModel.swift */; };
 		BBBC676126D74DD600579F45 /* FeedlyStreamModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBBC676026D74DD600579F45 /* FeedlyStreamModel.swift */; };
 		BBBC676426D7C8C300579F45 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = BBBC676326D7C8C300579F45 /* KeychainAccess */; };
 		BBCA089026D93C3A00E15B43 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBCA088F26D93C3A00E15B43 /* Feed.swift */; };
@@ -95,6 +98,9 @@
 		BB91406226D91FC2009D36EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		BBA239A026E11866008F94EF /* Date + Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date + Utils.swift"; sourceTree = "<group>"; };
 		BBA239A326E1193B008F94EF /* Shop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
+		BBA239A626E11C6B008F94EF /* CreateShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateShopViewController.swift; sourceTree = "<group>"; };
+		BBA239A826E11C77008F94EF /* CreateShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateShopViewModel.swift; sourceTree = "<group>"; };
+		BBA239AA26E11C83008F94EF /* CreateShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateShopModel.swift; sourceTree = "<group>"; };
 		BBBC676026D74DD600579F45 /* FeedlyStreamModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedlyStreamModel.swift; sourceTree = "<group>"; };
 		BBCA088F26D93C3A00E15B43 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		BD1590B9FA220FADBA6A1CEF /* Pods_feedly.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_feedly.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -283,6 +289,7 @@
 				BB61D4D726DA4DFC007F87A2 /* Error */,
 				BB61D4DD26DB7794007F87A2 /* Feedly */,
 				BB61D4EE26DB799E007F87A2 /* Firestore */,
+				BBA239A526E11C47008F94EF /* CreateShop */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -329,6 +336,16 @@
 				BBA239A326E1193B008F94EF /* Shop.swift */,
 			);
 			path = Struct;
+			sourceTree = "<group>";
+		};
+		BBA239A526E11C47008F94EF /* CreateShop */ = {
+			isa = PBXGroup;
+			children = (
+				BBA239A626E11C6B008F94EF /* CreateShopViewController.swift */,
+				BBA239A826E11C77008F94EF /* CreateShopViewModel.swift */,
+				BBA239AA26E11C83008F94EF /* CreateShopModel.swift */,
+			);
+			path = CreateShop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -608,9 +625,12 @@
 				BB61D4F026DB79BD007F87A2 /* FirestoreViewController.swift in Sources */,
 				BB61D4F726DB79F7007F87A2 /* FirestoreCell.swift in Sources */,
 				BBA239A126E11866008F94EF /* Date + Utils.swift in Sources */,
+				BBA239AB26E11C83008F94EF /* CreateShopModel.swift in Sources */,
 				BBBC676126D74DD600579F45 /* FeedlyStreamModel.swift in Sources */,
 				BBCA089026D93C3A00E15B43 /* Feed.swift in Sources */,
+				BBA239A926E11C77008F94EF /* CreateShopViewModel.swift in Sources */,
 				BB61D4F426DB79D5007F87A2 /* FirestoreModel.swift in Sources */,
+				BBA239A726E11C6B008F94EF /* CreateShopViewController.swift in Sources */,
 				BB61D4F226DB79C7007F87A2 /* FirestoreViewModel.swift in Sources */,
 				BB91406126D91F8B009D36EA /* R.generated.swift in Sources */,
 				BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */,

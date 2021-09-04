@@ -55,18 +55,19 @@ final class FirestoreViewController: ViewControllerBase {
 
         // 一覧データをUITableViewにセットする処理
         viewModel?.outputs.shops.bind(to: firestoreTableView.rx.items) { (tableView, row, shop) in
+            switch shop {
 
-            // shopの場合
-            if let shop = shop as? Shop {
+            case let shop as Shop:
                 let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.firestoreCell.identifier) as! FirestoreCell
                 cell.configure(shop: shop)
                 return cell
 
-            // 広告の場合 一旦実装は省略
-            } else {
+            case let nativeAd as GADNativeAd:
+                return UITableViewCell()
+                
+            default:
                 return UITableViewCell()
             }
-
         }.disposed(by: disposeBag)
 
         // RefreshControlを読んだ場合の処理
