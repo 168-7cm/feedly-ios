@@ -8,6 +8,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import GoogleMobileAds
 
 protocol FeedlyViewModelInputs {
     func getFeeds()
@@ -18,7 +19,7 @@ protocol FeedlyViewModelOutputs {
     var loading: Observable<Bool> { get }
     var error: Observable<Bool> { get }
     var errorText: Observable<String> { get }
-    var feedItems: Observable<[FeedItem]> { get }
+    var feedItems: Observable<[AnyObject]> { get }
 }
 
 protocol FeedlyViewModelType {
@@ -28,36 +29,41 @@ protocol FeedlyViewModelType {
 
 final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, FeedlyViewModelType {
 
-    // FeedlyViewModelType
-    var inputs: FeedlyViewModelInputs { return self }
-    var outputs: FeedlyViewModelOutputs { return self }
+    // MARK: - Properties
 
-    // FeedlyViewModelInputs
-    private let loadingRelay = BehaviorRelay<Bool>(value: false)
-    var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
-
-    private let errorRelay = BehaviorRelay<Bool>(value: false)
-    var error: Observable<Bool> { return self.errorRelay.asObservable() }
-
-    private let errorTextRelay = BehaviorRelay<String>(value: "")
-    var errorText: Observable<String> { return self.errorTextRelay.asObservable() }
-
-    private let feedItemsRelay = BehaviorRelay<[FeedItem]>(value: [])
-    var feedItems: Observable<[FeedItem]> { return self.feedItemsRelay.asObservable() }
-
-    // パラメーター
     private let feedlyStreamApi: FeedlyStreamModelProtocol
     private let feedlyAuthApi: FeedlyAuthModelProtocol
     private let disposeBag = DisposeBag()
     private var continuation: String?
+    private var nativeAdObservable: Observable<[GADNativeAd]>
 
-    // イニシャライザ
-    init(authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
+    // viewはここを経由してViewModelを扱う
+    var inputs: FeedlyViewModelInputs { return self }
+    var outputs: FeedlyViewModelOutputs { return self }
+
+    // Viewが購読する
+    private let loadingRelay = PublishRelay<Bool>()
+    var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
+
+    private let errorRelay = PublishRelay<Bool>()
+    var error: Observable<Bool> { return self.errorRelay.asObservable() }
+
+    private let errorTextRelay = PublishRelay<String>()
+    var errorText: Observable<String> { return self.errorTextRelay.asObservable() }
+
+    private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
+    var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
+
+    // MARK: - initilazier
+
+    init(nativeAdObservable: Observable<[GADNativeAd]>, authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
+        self.nativeAdObservable = nativeAdObservable
         self.feedlyAuthApi = authApi
         self.feedlyStreamApi = StreamApi
     }
 
-    // FeedlyViewModelInputs
+    // MARK: - Function
+
     func resetContinuation() {
         self.continuation = nil
     }
@@ -67,36 +73,48 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
         // ローティングの開始
         loadingRelay.accept(true)
 
-        // フィードを取得する
-        feedlyAuthApi.apiRequest()
-            .flatMap { self.feedlyStreamApi.apiRequest(access_token: $0, continuation: self.continuation) }
-            .subscribe(
+        let feedStream: Observable<Feed> = feedlyAuthApi.apiRequest().flatMap { self.feedlyStreamApi.apiRequest(access_token: $0, continuation: self.continuation) }.asObservable()
+        let nativeAdStream = self.nativeAdObservable
 
-                // API通信成功
-                onSuccess: { [weak self] feed in
-                    self?.hundleApiResult(feed: feed, error: nil)
-                },
-
-                // API通信失敗
-                onFailure: { [weak self] error  in
-                    self?.hundleApiResult(feed: nil, error: error as? CustomError)
-                }
-            ).disposed(by: self.disposeBag)
+        Observable.zip(
+            feedStream,
+            nativeAdStream
+        ).subscribe(
+            onNext: { [weak self] feed, nativeAds in
+                self?.hundleApiResult(feed: feed, nativeAds: nativeAds)
+            },
+            onError: { [weak self] error in
+                self?.handleErrorResult(error: error)
+            }
+        ).disposed(by: disposeBag)
     }
 
-    private func hundleApiResult(feed: Feed?, error: CustomError?) {
-
+    // MARK: - Private Function
+    
+    private func hundleApiResult(feed: Feed, nativeAds: [GADNativeAd]) {
         // ローディングの終了
         loadingRelay.accept(false)
 
-        if let feed = feed {
-            feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feed.items : feed.items)
-            self.continuation = feed.continuation
-        }
+        let feedItems = insertNativeAds(feeditems: feed.items, nativeAds: nativeAds)
+        feedItemsRelay.accept(self.continuation != nil ? feedItemsRelay.value + feedItems: feedItems)
+        self.continuation = feed.continuation
+    }
 
-        if let error = error {
-            errorRelay.accept(true)
-            errorTextRelay.accept(error.rawValue)
+    private func handleErrorResult(error: Error) {
+        loadingRelay.accept(false)
+        errorRelay.accept(false)
+        errorTextRelay.accept("失敗")
+    }
+
+    // 6個おきに広告を挟む
+    private func insertNativeAds(feeditems: [FeedItem], nativeAds: [GADNativeAd]) -> [AnyObject] {
+        var feeditems = feeditems as [AnyObject]
+        nativeAds.enumerated().forEach { (index, nativeAd) in
+            let index = (index+1)*6
+            if index < feeditems.count {
+                feeditems.insert(nativeAd, at: index)
+            }
         }
+        return feeditems
     }
 }
