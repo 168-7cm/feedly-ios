@@ -22,6 +22,7 @@ protocol ShopViewModelOutputs {
     var shops: Observable<[AnyObject]> { get }
     var loading: Observable<Bool> { get }
     var error: Observable<Error> { get }
+    var gotoEditShop: Observable<Shop> { get }
     var gotoCreateShop: Observable<Bool> { get }
 }
 
@@ -51,19 +52,24 @@ final class ShopViewModel: ShopViewModelInputs, ShopViewModelOutputs, ShopViewMo
     private let loadingRelay = PublishRelay<Bool>()
     var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
 
-    private let gotoCreateShopDriver = PublishRelay<Bool>()
-    var gotoCreateShop: Observable<Bool> { return gotoCreateShopDriver.asObservable() }
+    private let gotoEditShopRelay = PublishRelay<Shop>()
+    var gotoEditShop: Observable<Shop> { return self.gotoEditShopRelay.asObservable() }
+
+    private let goToCreateShopRelay = PublishRelay<Bool>()
+    var gotoCreateShop: Observable<Bool> { return self.goToCreateShopRelay.asObservable() }
 
     // MARK: - Function
 
 
     func createShopButtonDidTapped() {
-        gotoCreateShopDriver.accept(true)
+        goToCreateShopRelay.accept(true)
     }
 
     // 編集画面に行きます
     func didSelectedShop(indexPath: IndexPath) {
-
+        if let shop = shopsRelay.value[indexPath.row] as? Shop {
+            gotoEditShopRelay.accept(shop)
+        }
     }
 
     //ここで値を渡す場合は渡す　今回は渡さない

@@ -28,7 +28,8 @@ final class ShopViewController: ViewControllerBase {
 
     override func viewDidLoad() {
         setupTableView()
-        bind()
+        bindViewModel()
+
         // 初回取得分のフィードを表示する
         viewModel.inputs.getShops(nativeAdsObserbavle: self.nativeAdsRelay.asObservable())
         setupNativeAds()
@@ -43,6 +44,12 @@ final class ShopViewController: ViewControllerBase {
         return viewController
     }
 
+    // 画面遷移
+    private func goToEditShop(shop: Shop) {
+        let viewController = EditShopViewController.configureWith(shop: shop)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
     private func goToCreateShop() {
         let viewController = CreateShopViewContrller.configureWith()
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -55,16 +62,25 @@ final class ShopViewController: ViewControllerBase {
     }
 
     // ViewModelとBindする
-    private func bind() {
+    private func bindViewModel() {
 
-        // ボタンタップ
+        // MARK: UI
+
+        // ボタンを押した時の処理
         addShopButton.rx.tap.subscribe( { [weak self] _ in
             self?.viewModel.inputs.createShopButtonDidTapped()
         }).disposed(by: disposeBag)
 
-        // 画面遷移？？
-        viewModel.outputs.gotoCreateShop.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] _ in
-            self?.goToCreateShop()
+        // RefreshControlを読んだ場合の処理
+        refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
+            self?.setupNativeAds()
+            self?.viewModel.inputs.getShops(nativeAdsObserbavle: self?.nativeAdsRelay.asObservable())
+            self?.refreshControl.endRefreshing()
+        }).disposed(by: disposeBag)
+
+        // UITableViewに配置されたセルをタップした場合の処理
+        shopTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            self?.viewModel.inputs.didSelectedShop(indexPath: indexPath)
         }).disposed(by: disposeBag)
 
         // 一覧データをUITableViewにセットする処理
@@ -79,25 +95,26 @@ final class ShopViewController: ViewControllerBase {
             }
         }.disposed(by: disposeBag)
 
-        // RefreshControlを読んだ場合の処理
-        refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
-            self?.setupNativeAds()
-            self?.viewModel.inputs.getShops(nativeAdsObserbavle: self?.nativeAdsRelay.asObservable())
-            self?.refreshControl.endRefreshing()
-        }).disposed(by: disposeBag)
+        // MARK: Outputs
 
-        // UITableViewに配置されたセルをタップした場合の処理
-        shopTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
-            self?.viewModel.inputs.didSelectedShop(indexPath: indexPath)
-        }).disposed(by: disposeBag)
-
+        // インジケーターを表示する処理
         viewModel.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] loading in
             self?.showIndicator(isShow: loading)
+        }).disposed(by: disposeBag)
+
+        // 編集画面に遷移する
+        viewModel.outputs.gotoEditShop.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] shop in
+            self?.goToEditShop(shop: shop)
+        }).disposed(by: disposeBag)
+
+        // 作成画面に遷移する
+        viewModel.outputs.gotoCreateShop.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] _ in
+            self?.goToCreateShop()
         }).disposed(by: disposeBag)
     }
 }
 
-// MARK: - Extension - GADNativeAdLoaderDelegate
+// MARK: - GADNativeAdLoaderDelegate
 
 extension ShopViewController: GADNativeAdLoaderDelegate {
 

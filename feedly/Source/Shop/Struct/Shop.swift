@@ -11,5 +11,6 @@ struct Shop: Codable {
     let name: String
     let location: String
     let createdAt: String
+    let documentID: String
     let foods: [Food]
 }

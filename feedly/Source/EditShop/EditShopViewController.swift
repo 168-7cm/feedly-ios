@@ -1,45 +1,37 @@
 //
-//  CreateShopViewController.swift
+//  EditShopViewController.swift
 //  feedly
 //
-//  Created by kou yamamoto on 2021/09/02.
+//  Created by kou yamamoto on 2021/09/06.
 //
 
 import UIKit
 import RxSwift
 import RxCocoa
 
-final class CreateShopViewContrller: ViewControllerBase {
+final class EditShopViewController: ViewControllerBase {
+
 
     // MARK: - Properties
 
     private let disposeBag = DisposeBag()
-    private var viewModel = CreateShopViewModel()
+    private var viewModel: EditShopViewModelType = EditShopViewModel()
 
-    @IBOutlet weak var createShopButton: UIButton!
+    @IBOutlet weak var shopNameTextView: PlaceTextView!
 
     override func viewDidLoad() {
         bindViewModel()
     }
 
-    static func configureWith() -> CreateShopViewContrller {
-        let viewController = R.storyboard.createShop.createShop()!
-        viewController.viewModel.inputs.configureWith()
+    static func configureWith(shop: Shop) -> EditShopViewController {
+        let viewController = R.storyboard.editShop.editShop()!
+        viewController.viewModel.inputs.configureWith(shop: shop)
         return viewController
     }
 
     // MARK: - Private Function
 
     private func bindViewModel() {
-
-        createShopButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
-            self?.viewModel.inputs.createShop()
-        }).disposed(by: disposeBag)
-
-        // 作成した場合
-        viewModel.outputs.shop.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] shop in
-            print("didCreatedShop")
-        }).disposed(by: disposeBag)
 
         // エラーの場合の処理
         viewModel.outputs.error.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] error in

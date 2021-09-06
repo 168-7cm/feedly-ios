@@ -14,6 +14,7 @@ import FirebaseFirestoreSwift
 struct Food: Codable {
     let name: String
     let price: Int
+    let documentID: String
 }
 
 protocol ShopModelProtocol {
@@ -45,22 +46,12 @@ final class ShopModel: ShopModelProtocol {
                 }
 
                 if let documentSnapshots = documentSnapshots {
-                    let shops = documentSnapshots.documents.compactMap { self?.generateShop(documentSnapshot: $0) }
+                    let shops = documentSnapshots.documents.compactMap { FirestoreCosntant.generateShop(documentSnapshot: $0) }
                     self?.lastDocument = documentSnapshots.documents.last
                     single(.success(shops))
                 }
             }
             return Disposables.create()
-        }
-    }
-
-    // MARK: - Private Function
-
-    private func generateShop(documentSnapshot: DocumentSnapshot) -> Shop? {
-        if let data = documentSnapshot.data(), let shop = try? Firestore.Decoder().decode(Shop.self, from: data) {
-            return shop
-        } else {
-            return nil
         }
     }
 }

@@ -21,6 +21,13 @@
 		BB4651E826E62FF900D4149C /* TabBar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB4651E726E62FF900D4149C /* TabBar.storyboard */; };
 		BB4651EA26E6300500D4149C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651E926E6300500D4149C /* TabBarController.swift */; };
 		BB4651EC26E63A3E00D4149C /* UIImage + Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651EB26E63A3E00D4149C /* UIImage + Utils.swift */; };
+		BB4651EF26E6433400D4149C /* EditShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651EE26E6433400D4149C /* EditShopViewController.swift */; };
+		BB4651F126E6433F00D4149C /* EditShopViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651F026E6433F00D4149C /* EditShopViewModel.swift */; };
+		BB4651F326E6434B00D4149C /* EditShopModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651F226E6434B00D4149C /* EditShopModel.swift */; };
+		BB4651F526E6435700D4149C /* EditShop.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BB4651F426E6435700D4149C /* EditShop.storyboard */; };
+		BB4651F926E667DD00D4149C /* PlaceTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB4651F726E667DD00D4149C /* PlaceTextView.xib */; };
+		BB4651FA26E667DD00D4149C /* PlaceTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB4651F826E667DD00D4149C /* PlaceTextView.swift */; };
+		BB4651FD26E6681700D4149C /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BB4651FC26E6681700D4149C /* SnapKit */; };
 		BB61D4D626DA3294007F87A2 /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = BB61D4D526DA3294007F87A2 /* Toast */; };
 		BB61D4D926DA4E06007F87A2 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB61D4D826DA4E06007F87A2 /* Error.swift */; };
 		BB61D4DC26DB476D007F87A2 /* ViewControllerBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB61D4DB26DB476D007F87A2 /* ViewControllerBase.swift */; };
@@ -87,6 +94,12 @@
 		BB4651E726E62FF900D4149C /* TabBar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = TabBar.storyboard; sourceTree = "<group>"; };
 		BB4651E926E6300500D4149C /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		BB4651EB26E63A3E00D4149C /* UIImage + Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage + Utils.swift"; sourceTree = "<group>"; };
+		BB4651EE26E6433400D4149C /* EditShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShopViewController.swift; sourceTree = "<group>"; };
+		BB4651F026E6433F00D4149C /* EditShopViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShopViewModel.swift; sourceTree = "<group>"; };
+		BB4651F226E6434B00D4149C /* EditShopModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditShopModel.swift; sourceTree = "<group>"; };
+		BB4651F426E6435700D4149C /* EditShop.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EditShop.storyboard; sourceTree = "<group>"; };
+		BB4651F726E667DD00D4149C /* PlaceTextView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlaceTextView.xib; sourceTree = "<group>"; };
+		BB4651F826E667DD00D4149C /* PlaceTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceTextView.swift; sourceTree = "<group>"; };
 		BB61D4D826DA4E06007F87A2 /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		BB61D4DB26DB476D007F87A2 /* ViewControllerBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerBase.swift; sourceTree = "<group>"; };
 		BB61D4EF26DB79BD007F87A2 /* ShopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
@@ -123,6 +136,7 @@
 				BB02C7BB26D6905F00EB004C /* SwiftyJSON in Frameworks */,
 				BB02C7B626D68F6D00EB004C /* Alamofire in Frameworks */,
 				BBBC676426D7C8C300579F45 /* KeychainAccess in Frameworks */,
+				BB4651FD26E6681700D4149C /* SnapKit in Frameworks */,
 				BB61D4D626DA3294007F87A2 /* Toast in Frameworks */,
 				1EE69B1D57C1EC8C52A66790 /* Pods_feedly.framework in Frameworks */,
 			);
@@ -228,6 +242,26 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		BB4651ED26E6431300D4149C /* EditShop */ = {
+			isa = PBXGroup;
+			children = (
+				BB4651EE26E6433400D4149C /* EditShopViewController.swift */,
+				BB4651F026E6433F00D4149C /* EditShopViewModel.swift */,
+				BB4651F226E6434B00D4149C /* EditShopModel.swift */,
+				BB4651F426E6435700D4149C /* EditShop.storyboard */,
+			);
+			path = EditShop;
+			sourceTree = "<group>";
+		};
+		BB4651F626E667DD00D4149C /* UITextField */ = {
+			isa = PBXGroup;
+			children = (
+				BB4651F826E667DD00D4149C /* PlaceTextView.swift */,
+				BB4651F726E667DD00D4149C /* PlaceTextView.xib */,
+			);
+			path = UITextField;
+			sourceTree = "<group>";
+		};
 		BB61D4D726DA4DFC007F87A2 /* Error */ = {
 			isa = PBXGroup;
 			children = (
@@ -306,6 +340,7 @@
 				BB61D4DD26DB7794007F87A2 /* Feedly */,
 				BB61D4EE26DB799E007F87A2 /* Shop */,
 				BBA239A526E11C47008F94EF /* CreateShop */,
+				BB4651ED26E6431300D4149C /* EditShop */,
 				BB61D4D726DA4DFC007F87A2 /* Error */,
 				BBA2399F26E11853008F94EF /* Extension */,
 			);
@@ -343,6 +378,7 @@
 		BBA2399F26E11853008F94EF /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				BB4651F626E667DD00D4149C /* UITextField */,
 				BBA239A026E11866008F94EF /* Date + Utils.swift */,
 				BB4651EB26E63A3E00D4149C /* UIImage + Utils.swift */,
 			);
@@ -392,6 +428,7 @@
 				BB02C7BA26D6905F00EB004C /* SwiftyJSON */,
 				BBBC676326D7C8C300579F45 /* KeychainAccess */,
 				BB61D4D526DA3294007F87A2 /* Toast */,
+				BB4651FC26E6681700D4149C /* SnapKit */,
 			);
 			productName = feedly;
 			productReference = BB02C78126D68F2500EB004C /* feedly.app */;
@@ -472,6 +509,7 @@
 				BB02C7B926D6905F00EB004C /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				BBBC676226D7C8C300579F45 /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				BB61D4D426DA3294007F87A2 /* XCRemoteSwiftPackageReference "Toast-Swift" */,
+				BB4651FB26E6681700D4149C /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = BB02C78226D68F2500EB004C /* Products */;
 			projectDirPath = "";
@@ -493,6 +531,8 @@
 				BB61D4F926DB7A01007F87A2 /* ShopCell.xib in Resources */,
 				BB91405726D90EF2009D36EA /* Feedly.storyboard in Resources */,
 				BB61D4FB26DB7A14007F87A2 /* Shop.storyboard in Resources */,
+				BB4651F526E6435700D4149C /* EditShop.storyboard in Resources */,
+				BB4651F926E667DD00D4149C /* PlaceTextView.xib in Resources */,
 				BB4651E826E62FF900D4149C /* TabBar.storyboard in Resources */,
 				BB02C78E26D68F2800EB004C /* Assets.xcassets in Resources */,
 				BB4651D826E5EB3300D4149C /* CreateShop.storyboard in Resources */,
@@ -650,13 +690,17 @@
 				BBA239AB26E11C83008F94EF /* CreateShopModel.swift in Sources */,
 				BBBC676126D74DD600579F45 /* FeedlyStreamModel.swift in Sources */,
 				BB4651EC26E63A3E00D4149C /* UIImage + Utils.swift in Sources */,
+				BB4651F326E6434B00D4149C /* EditShopModel.swift in Sources */,
 				BBCA089026D93C3A00E15B43 /* Feed.swift in Sources */,
 				BBA239A926E11C77008F94EF /* CreateShopViewModel.swift in Sources */,
 				BB61D4F426DB79D5007F87A2 /* ShopModel.swift in Sources */,
 				BBA239A726E11C6B008F94EF /* CreateShopViewController.swift in Sources */,
+				BB4651EF26E6433400D4149C /* EditShopViewController.swift in Sources */,
 				BB61D4F226DB79C7007F87A2 /* ShopViewModel.swift in Sources */,
+				BB4651FA26E667DD00D4149C /* PlaceTextView.swift in Sources */,
 				BB91406126D91F8B009D36EA /* R.generated.swift in Sources */,
 				BB91405526D90EBD009D36EA /* FeedlyViewController.swift in Sources */,
+				BB4651F126E6433F00D4149C /* EditShopViewModel.swift in Sources */,
 				BBA239A426E1193B008F94EF /* Shop.swift in Sources */,
 				BB02C7B826D68F7D00EB004C /* FeedlyAuthModel.swift in Sources */,
 				BB61D4DC26DB476D007F87A2 /* ViewControllerBase.swift in Sources */,
@@ -1007,6 +1051,14 @@
 				minimumVersion = 5.0.1;
 			};
 		};
+		BB4651FB26E6681700D4149C /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 		BB61D4D426DA3294007F87A2 /* XCRemoteSwiftPackageReference "Toast-Swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/scalessec/Toast-Swift";
@@ -1035,6 +1087,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BB02C7B926D6905F00EB004C /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
+		};
+		BB4651FC26E6681700D4149C /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BB4651FB26E6681700D4149C /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 		BB61D4D526DA3294007F87A2 /* Toast */ = {
 			isa = XCSwiftPackageProductDependency;

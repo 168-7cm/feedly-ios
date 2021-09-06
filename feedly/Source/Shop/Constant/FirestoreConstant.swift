@@ -56,4 +56,13 @@ struct FirestoreCosntant {
     static func getFeedDocumentID(shopDocumentID: String) -> String {
         return self.getFoodCollectionRef(shopDocumentID: shopDocumentID).document().documentID
     }
+
+    // ショップ構造体を作成する
+    static func generateShop(documentSnapshot: DocumentSnapshot) -> Shop? {
+        if let data = documentSnapshot.data(), let shop = try? Firestore.Decoder().decode(Shop.self, from: data) {
+            return shop
+        } else {
+            return nil
+        }
+    }
 }

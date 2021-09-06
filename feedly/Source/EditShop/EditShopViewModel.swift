@@ -1,8 +1,8 @@
 //
-//  CreateShopViewModel.swift
+//  EditShopViewModel.swift
 //  feedly
 //
-//  Created by kou yamamoto on 2021/09/02.
+//  Created by kou yamamoto on 2021/09/06.
 //
 
 import Foundation
@@ -10,65 +10,68 @@ import RxSwift
 import RxCocoa
 import Firebase
 
-protocol CreateShopViewModelInputs {
-    func createShop()
-    func configureWith()
+protocol EditShopViewModelInputs {
+    func editShop(shop: Shop)
+    func configureWith(shop: Shop)
 }
 
-protocol CreateShopViewModelOutputs {
+protocol EditShopViewModelOutputs {
     var loading: Observable<Bool> { get }
-    var shop: Observable<Shop> { get }
+   // var shop: Observable<Shop> { get }
     var error: Observable<Error> { get }
 
 }
 
-protocol CreateShopViewModelType {
-    var inputs: CreateShopViewModelInputs { get }
-    var outputs: CreateShopViewModelOutputs { get }
+protocol EditShopViewModelType {
+    var inputs: EditShopViewModelInputs { get }
+    var outputs: EditShopViewModelOutputs { get }
 }
 
-final class CreateShopViewModel: CreateShopViewModelInputs, CreateShopViewModelOutputs, CreateShopViewModelType {
+final class EditShopViewModel: EditShopViewModelInputs, EditShopViewModelOutputs, EditShopViewModelType {
+
     // MARK: - Properties
 
-    private let createShopModel = CreateShopModel()
+    private let editShopModel: EditShopModelProtocol = EditShopModel()
     private let disposeBag = DisposeBag()
+    private var shop: Shop?
 
     // viewはここを経由してViewModelを扱う
-    var inputs: CreateShopViewModelInputs { return self }
-    var outputs: CreateShopViewModelOutputs { return self }
+    var inputs: EditShopViewModelInputs { return self }
+    var outputs: EditShopViewModelOutputs { return self }
 
     private let loadingRelay = PublishRelay<Bool>()
     var loading: Observable<Bool> { return self.loadingRelay.asObservable() }
 
     private let shopRelay = PublishRelay<Shop>()
-    var shop: Observable<Shop> { return self.shopRelay.asObservable() }
+   // var shops: Observable<Shop> { return self.shopRelay.asObservable() }
 
     private let erroRelay = PublishRelay<Error>()
     var error: Observable<Error> { return self.erroRelay.asObservable() }
 
+
     // MARK: - Function
 
     // 渡したい値がある時はここで入れる
-    func configureWith() {
-
+    func configureWith(shop: Shop) {
+        self.shop = shop
     }
 
-    func createShop() {
+    func editShop(shop: Shop) {
 
         // ローディングの開始
         loadingRelay.accept(true)
 
-        // 今回はここで作成しているが、本当はViewからの値で作成する予定
-        let shopDocumentID = FirestoreCosntant.getShopDocumentID()
-        let shop = Shop(name: "すき家", location: "東京都新宿区高田馬場", createdAt: Date().toString(), documentID: shopDocumentID, foods: [])
-        self.createShopModel.create(shop: shop).subscribe(
+        // 今回はここで作成しているが、本当はViewからの値で編集する予定
+        let shopDocumentID = shop.documentID
+        let shop = Shop(name: "変更済み", location: shop.location, createdAt: shop.createdAt, documentID: shopDocumentID, foods: shop.foods)
+        self.editShopModel.edit(shop: shop).subscribe(
 
-            // 作成に成功した場合
+            // 更新に成功した場合
             onSuccess: { [weak self] shop in
                 self?.handleApiResult(shop: shop, error: nil)
             },
 
-            // 作成に失敗した場合
+            // 更新に失敗した場合
             onFailure: { [weak self] error in
                 self?.handleApiResult(shop: nil, error: error)
             }
@@ -82,10 +85,12 @@ final class CreateShopViewModel: CreateShopViewModelInputs, CreateShopViewModelO
         // ローティングの中止
         loadingRelay.accept(false)
 
+        // 更新に成功した場合
         if let shop = shop {
             shopRelay.accept(shop)
         }
 
+        // 更新に失敗した場合
         if let error = error {
             erroRelay.accept(error)
         }
