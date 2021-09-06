@@ -9,7 +9,6 @@ import Foundation
 
 extension Date {
 
-    // MARK: Methods
     func toString() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ja_JP")

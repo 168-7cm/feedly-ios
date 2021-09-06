@@ -16,13 +16,12 @@ struct Food: Codable {
     let price: Int
 }
 
-protocol FirestoreModelProtocol {
+protocol ShopModelProtocol {
     func resetLastDocument()
-    func create(shop: Shop, shopDocumentID: String) -> Single<Shop>
     func getShops() -> Single<[Shop]>
 }
 
-final class FirestoreShopModel: FirestoreModelProtocol {
+final class ShopModel: ShopModelProtocol {
 
     private var lastDocument: QueryDocumentSnapshot?
 
@@ -50,32 +49,6 @@ final class FirestoreShopModel: FirestoreModelProtocol {
                     self?.lastDocument = documentSnapshots.documents.last
                     single(.success(shops))
                 }
-            }
-            return Disposables.create()
-        }
-    }
-
-    //　ショップを作成する
-    func create(shop: Shop, shopDocumentID: String) -> Single<Shop> {
-
-        return Single<Shop>.create { single in
-            if let data = try? Firestore.Encoder().encode(shop) {
-
-                // Firestoreにデータを保存する
-                FirestoreCosntant.getShopCollectionRef().document(shopDocumentID).setData(data) { error in
-
-                    // データ保存に失敗
-                    if let _ = error {
-                        single(.failure(firestoreError.failedToCreate))
-
-                        // データ保存に成功
-                    } else {
-                        single(.success(shop))
-                    }
-                }
-                // デコードに失敗
-            } else {
-                single(.failure(firestoreError.failedToDecpde))
             }
             return Disposables.create()
         }

@@ -11,40 +11,37 @@ import RxCocoa
 import Toast
 import GoogleMobileAds
 
-// MARK:- Class
 final class FeedlyViewController: ViewControllerBase {
 
     // MARK: - Properties
 
     private let disposeBag = DisposeBag()
     private let refreshControl = UIRefreshControl()
-    private var viewModel: FeedlyViewModelType!
+    private let viewModel = FeedlyViewModel()
 
     // 広告表示用のプロパティ
     private var nativeAdLoader: GADAdLoader!
     private var nativeAds = [GADNativeAd]()
-    private let NativeADRelay = PublishRelay<[GADNativeAd]>()
+    private let nativeAdsRelay = PublishRelay<[GADNativeAd]>()
 
+    // IBOutlet
     @IBOutlet weak var feedListTableView: UITableView!
     @IBOutlet weak var showNextFeedButton: UIBarButtonItem!
 
     override func viewDidLoad() {
-        setupViewModel()
         setupTableView()
         bind()
+        self.viewModel.getFeeds(nativeAdsStream: nativeAdsRelay.asObservable())
+        self.setupNativeAds()
+    }
+
+    static func configureWith() -> FeedlyViewController {
+        let viewController = R.storyboard.feedly.feedly()!
+        viewController.viewModel.congigureWith()
+        return viewController
     }
 
     // MARK: - Private Function
-
-    private func setupViewModel() {
-
-        // ViewModelの初期化
-        viewModel = FeedlyViewModel(nativeAdObservable: NativeADRelay.asObservable(), authApi: FeedlyAuthModel(), StreamApi: FeedlyStreamModel())
-
-        // 初回取得分のフィードを表示する
-        viewModel?.inputs.getFeeds()
-        setupNativeAD()
-    }
 
     private func setupTableView() {
         feedListTableView.register(R.nib.feedCell)
@@ -54,17 +51,19 @@ final class FeedlyViewController: ViewControllerBase {
     private func bind() {
 
         // 一覧データをUITableViewにセットする処理
-        viewModel?.outputs.feedItems.bind(to: feedListTableView.rx.items(cellIdentifier: R.reuseIdentifier.feedCell.identifier, cellType: FeedCell.self)) { [weak self] (index, feedItem, cell) in
-            switch cell {
+        viewModel.outputs.feedItems.bind(to: feedListTableView.rx.items) { (tableView, row, feedItem) in
+            switch feedItem {
             case let feedItem as FeedItem:
-                cell.setup(feedItem: feedItem, index: index)
+                let cell = tableView.dequeueReusableCell(withIdentifier: R.reuseIdentifier.feedCell.identifier) as! FeedCell
+                cell.configure(feedItem: feedItem)
+                return cell
             default:
-                cell.setup(feedItem: FeedItem(originId: "", title: "広告広告広告広告", author: "", published: Date(), visual: Visual(url: "")), index: index)
+                return UITableViewCell()
             }
         }.disposed(by: disposeBag)
 
         // UITableViewに配置されたセルをタップした場合の処理
-        feedListTableView.rx.modelSelected(FeedItem.self).subscribe( onNext: { [weak self] feed in
+        feedListTableView.rx.modelSelected(FeedItem.self).subscribe(onNext: { [weak self] feed in
             // 画面遷移
             print("didTapped\(feed)")
         }).disposed(by: disposeBag)
@@ -78,32 +77,32 @@ final class FeedlyViewController: ViewControllerBase {
             let lastRowIndex = self.feedListTableView.numberOfRows(inSection: lastSectionIndex) - 1
             let showsTableFooterView = feed.indexPath.section ==  lastSectionIndex && feed.indexPath.row == lastRowIndex
             if showsTableFooterView {
-                self.setupNativeAD()
-                self.viewModel.inputs.getFeeds()
+                self.setupNativeAds()
+                self.viewModel.inputs.getFeeds(nativeAdsStream: self.nativeAdsRelay.asObservable())
             }
         }).disposed(by: disposeBag)
 
         // RefreshControlを読んだ場合の処理
         refreshControl.rx.controlEvent(.valueChanged).asDriver().drive(onNext: { [weak self] _ in
-            self?.setupNativeAD()
-            self?.viewModel?.inputs.resetContinuation()
-            self?.viewModel?.inputs.getFeeds()
+            self?.setupNativeAds()
+            self?.viewModel.inputs.resetContinuation()
+            self?.viewModel.inputs.getFeeds(nativeAdsStream: (self!.nativeAdsRelay.asObservable()))
             self?.refreshControl.endRefreshing()
         }).disposed(by: disposeBag)
 
         // 追加取得する処理
         showNextFeedButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
-            self?.viewModel?.inputs.getFeeds()
-            self?.setupNativeAD()
+            self?.viewModel.inputs.getFeeds(nativeAdsStream: self!.nativeAdsRelay.asObservable())
+            self?.setupNativeAds()
         }).disposed(by: disposeBag)
 
         // エラーの場合
-        viewModel?.outputs.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
+        viewModel.outputs.errorText.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] errorMessage in
             self?.showToast(errorMessage: errorMessage)
         }).disposed(by: disposeBag)
 
         // インジケーターを表示/非表示にする処理
-        viewModel?.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
+        viewModel.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] in
             self?.showIndicator(isShow: $0)
         }).disposed(by: disposeBag)
     }
@@ -113,7 +112,7 @@ final class FeedlyViewController: ViewControllerBase {
 
 extension FeedlyViewController: GADNativeAdLoaderDelegate {
 
-    func setupNativeAD() {
+    func setupNativeAds() {
         let multipleAdsOptions = GADMultipleAdsAdLoaderOptions()
         multipleAdsOptions.numberOfAds = 5
         nativeAdLoader = GADAdLoader(adUnitID: "ca-app-pub-3940256099942544/3986624511", rootViewController: self, adTypes: [.native], options: [multipleAdsOptions])
@@ -128,10 +127,11 @@ extension FeedlyViewController: GADNativeAdLoaderDelegate {
 
     // 失敗した時
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: Error) {
+
     }
 
     //広告のリクエストが終了
     func adLoaderDidFinishLoading(_ adLoader: GADAdLoader) {
-        self.NativeADRelay.accept(nativeAds)
+        self.nativeAdsRelay.accept(nativeAds)
     }
 }

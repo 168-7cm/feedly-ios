@@ -12,8 +12,7 @@ final class FeedCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var indexLabel: UILabel!
 
-    func setup(feedItem: FeedItem, index: Int) {
-        indexLabel.text = "\(index)"
+    func configure(feedItem: FeedItem) {
         titleLabel.text = feedItem.title
     }
 }

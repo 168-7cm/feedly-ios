@@ -11,8 +11,9 @@ import RxCocoa
 import GoogleMobileAds
 
 protocol FeedlyViewModelInputs {
-    func getFeeds()
+    func getFeeds(nativeAdsStream: Observable<[GADNativeAd]>)
     func resetContinuation()
+    func congigureWith()
 }
 
 protocol FeedlyViewModelOutputs {
@@ -31,11 +32,11 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
 
     // MARK: - Properties
 
-    private let feedlyStreamApi: FeedlyStreamModelProtocol
-    private let feedlyAuthApi: FeedlyAuthModelProtocol
+    private let feedlyStreamApi = FeedlyStreamModel()
+    private let feedlyAuthApi = FeedlyAuthModel()
     private let disposeBag = DisposeBag()
     private var continuation: String?
-    private var nativeAdObservable: Observable<[GADNativeAd]>
+    private var nativeAdObservable: Observable<[GADNativeAd]>?
 
     // viewはここを経由してViewModelを扱う
     var inputs: FeedlyViewModelInputs { return self }
@@ -54,31 +55,26 @@ final class FeedlyViewModel: FeedlyViewModelInputs, FeedlyViewModelOutputs, Feed
     private let feedItemsRelay = BehaviorRelay<[AnyObject]>(value: [])
     var feedItems: Observable<[AnyObject]> { return self.feedItemsRelay.asObservable() }
 
-    // MARK: - initilazier
-
-    init(nativeAdObservable: Observable<[GADNativeAd]>, authApi: FeedlyAuthModelProtocol, StreamApi: FeedlyStreamModelProtocol) {
-        self.nativeAdObservable = nativeAdObservable
-        self.feedlyAuthApi = authApi
-        self.feedlyStreamApi = StreamApi
-    }
-
     // MARK: - Function
+
+    func congigureWith() {
+        
+    }
 
     func resetContinuation() {
         self.continuation = nil
     }
 
-    func getFeeds() {
+    func getFeeds(nativeAdsStream: Observable<[GADNativeAd]>) {
 
         // ローティングの開始
         loadingRelay.accept(true)
 
         let feedStream: Observable<Feed> = feedlyAuthApi.apiRequest().flatMap { self.feedlyStreamApi.apiRequest(access_token: $0, continuation: self.continuation) }.asObservable()
-        let nativeAdStream = self.nativeAdObservable
 
         Observable.zip(
             feedStream,
-            nativeAdStream
+            nativeAdsStream
         ).subscribe(
             onNext: { [weak self] feed, nativeAds in
                 self?.hundleApiResult(feed: feed, nativeAds: nativeAds)

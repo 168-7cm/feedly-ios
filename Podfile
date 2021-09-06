@@ -13,6 +13,7 @@ target 'feedly' do
   pod 'R.swift'
   pod 'Google-Mobile-Ads-SDK'
 
+  # Firebase
   pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '8.1.0'
   pod 'Firebase/Core'
   pod 'Firebase/Auth'

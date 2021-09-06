@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class FirestoreCell: UITableViewCell {
+final class ShopCell: UITableViewCell {
 
     @IBOutlet weak var shopNameLabel: UILabel!
 
