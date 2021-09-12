@@ -32,13 +32,14 @@ final class CreateShopViewContrller: ViewControllerBase {
 
     private func bindViewModel() {
 
+        // ショップを作成する場合
         createShopButton.rx.tap.asDriver().drive(onNext: { [weak self] _ in
             self?.viewModel.inputs.createShop()
         }).disposed(by: disposeBag)
 
         // 作成した場合
         viewModel.outputs.shop.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] shop in
-            print("didCreatedShop")
+            // ここで親Viewに作成したことを通知したい
         }).disposed(by: disposeBag)
 
         // エラーの場合の処理

@@ -60,16 +60,14 @@ final class ShopViewModel: ShopViewModelInputs, ShopViewModelOutputs, ShopViewMo
 
     // MARK: - Function
 
-
     func createShopButtonDidTapped() {
         goToCreateShopRelay.accept(true)
     }
 
-    // 編集画面に行きます
+    // 編集画面遷移させる
     func didSelectedShop(indexPath: IndexPath) {
-        if let shop = shopsRelay.value[indexPath.row] as? Shop {
-            gotoEditShopRelay.accept(shop)
-        }
+        guard let shop = shopsRelay.value[indexPath.row] as? Shop else { return }
+        gotoEditShopRelay.accept(shop)
     }
 
     //ここで値を渡す場合は渡す　今回は渡さない
@@ -113,7 +111,7 @@ final class ShopViewModel: ShopViewModelInputs, ShopViewModelOutputs, ShopViewMo
         // 成功した場合
         if let shops = shops, let nativeAds = nativeAds {
             let shops = insertNativeAds(shops: shops, nativeAds: nativeAds)
-            shopsRelay.accept(shops)
+            shopsRelay.accept(shopsRelay.value + shops)
         }
 
         // 失敗した場合

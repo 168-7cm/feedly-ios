@@ -16,20 +16,42 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="ああああ" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Btx-vn-F5P" customClass="PlaceTextView" customModule="feedly" customModuleProvider="target">
-                                <rect key="frame" x="87" y="299" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="ああああ" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Btx-vn-F5P" customClass="PlaceTextView" customModule="feedly" customModuleProvider="target">
+                                <rect key="frame" x="87" y="289" width="240" height="120"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="1bl-eP-EvU"/>
+                                    <constraint firstAttribute="height" constant="120" id="D7r-Ch-d6c"/>
+                                </constraints>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FNX-sU-0Za">
+                                <rect key="frame" x="186" y="238" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7OG-OL-Nre">
+                                <rect key="frame" x="176" y="459" width="62" height="30"/>
+                                <state key="normal" title="変更する"/>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Btx-vn-F5P" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="KSI-uq-Jof"/>
+                            <constraint firstItem="Btx-vn-F5P" firstAttribute="top" secondItem="FNX-sU-0Za" secondAttribute="bottom" constant="30" id="MOu-Lc-asL"/>
+                            <constraint firstItem="7OG-OL-Nre" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="P1D-Kg-8pT"/>
+                            <constraint firstItem="FNX-sU-0Za" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="gog-XC-HGh"/>
+                            <constraint firstItem="FNX-sU-0Za" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="150" id="mma-Qc-EkK"/>
+                            <constraint firstItem="7OG-OL-Nre" firstAttribute="top" secondItem="Btx-vn-F5P" secondAttribute="bottom" constant="50" id="zLG-Jg-nCC"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="4Ww-Up-8aL"/>
                     <connections>
+                        <outlet property="changeShopInfoButton" destination="7OG-OL-Nre" id="JeG-g4-Tvy"/>
                         <outlet property="shopNameTextView" destination="Btx-vn-F5P" id="pl0-NQ-43x"/>
                     </connections>
                 </viewController>

@@ -29,7 +29,6 @@ final class ShopViewController: ViewControllerBase {
     override func viewDidLoad() {
         setupTableView()
         bindViewModel()
-
         // 初回取得分のフィードを表示する
         viewModel.inputs.getShops(nativeAdsObserbavle: self.nativeAdsRelay.asObservable())
         setupNativeAds()
@@ -64,8 +63,6 @@ final class ShopViewController: ViewControllerBase {
     // ViewModelとBindする
     private func bindViewModel() {
 
-        // MARK: UI
-
         // ボタンを押した時の処理
         addShopButton.rx.tap.subscribe( { [weak self] _ in
             self?.viewModel.inputs.createShopButtonDidTapped()
@@ -80,6 +77,7 @@ final class ShopViewController: ViewControllerBase {
 
         // UITableViewに配置されたセルをタップした場合の処理
         shopTableView.rx.itemSelected.subscribe(onNext: { [weak self] indexPath in
+            self?.shopTableView.deselectRow(at: indexPath, animated: true)
             self?.viewModel.inputs.didSelectedShop(indexPath: indexPath)
         }).disposed(by: disposeBag)
 
@@ -94,8 +92,6 @@ final class ShopViewController: ViewControllerBase {
                 return UITableViewCell()
             }
         }.disposed(by: disposeBag)
-
-        // MARK: Outputs
 
         // インジケーターを表示する処理
         viewModel.outputs.loading.asDriver(onErrorDriveWith: Driver.empty()).drive(onNext: { [weak self] loading in

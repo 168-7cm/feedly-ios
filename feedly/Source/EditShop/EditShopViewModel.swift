@@ -11,7 +11,7 @@ import RxCocoa
 import Firebase
 
 protocol EditShopViewModelInputs {
-    func editShop(shop: Shop)
+    func editShop(shopName: String)
     func configureWith(shop: Shop)
 }
 
@@ -33,7 +33,7 @@ final class EditShopViewModel: EditShopViewModelInputs, EditShopViewModelOutputs
 
     private let editShopModel: EditShopModelProtocol = EditShopModel()
     private let disposeBag = DisposeBag()
-    private var shop: Shop?
+    private var shop: Shop!
 
     // viewはここを経由してViewModelを扱う
     var inputs: EditShopViewModelInputs { return self }
@@ -56,14 +56,14 @@ final class EditShopViewModel: EditShopViewModelInputs, EditShopViewModelOutputs
         self.shop = shop
     }
 
-    func editShop(shop: Shop) {
+    func editShop(shopName: String) {
 
         // ローディングの開始
         loadingRelay.accept(true)
 
         // 今回はここで作成しているが、本当はViewからの値で編集する予定
         let shopDocumentID = shop.documentID
-        let shop = Shop(name: "変更済み", location: shop.location, createdAt: shop.createdAt, documentID: shopDocumentID, foods: shop.foods)
+        let shop = Shop(name: shopName, location: shop.location, createdAt: shop.createdAt, documentID: shopDocumentID, foods: shop.foods)
         self.editShopModel.edit(shop: shop).subscribe(
 
             // 更新に成功した場合
